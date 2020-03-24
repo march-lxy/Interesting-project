@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color:rgb(235, 177, 102);
+        }
+        .click {
+            font-size:30px;
+            text-align:center;
+            cursor:pointer;
+           
+        }
+
+        .login {
+            background-color: #fff;
+            width:500px;
+            height:280px;
+            border:1px solid #ccc;
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin-left:-250px;
+            margin-top:-130px;
+            box-shadow: 0px 0px 10px #ddd;
+            display: none;
+            -moz-user-select: none;
+            /*火狐*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10*/
+            -khtml-user-select: none;
+            /*早期浏览器*/
+            user-select: none;
+        }
+        .login .login_t {
+            height:60px;
+            text-align: center;
+            line-height: 80px;
+            font-size: 20px;
+            cursor:move;
+
+        }
+        .login .login_m {
+            margin-top:20px;
+            font-size:15px;
+            overflow: hidden;
+
+        }
+        .login .login_m  input{
+            width: 320px;
+            height:30px;
+            margin-right:40px;
+            margin-top:8px;         
+            border:1px solid #ebebeb;
+            
+
+        }
+        .login .login_m  .login_input{
+            height:50px;
+            line-height: 50px;
+           
+        }
+        .login .login_m  .login_input label{
+           height:50px; 
+           width: 120px;
+           line-height: 50px;
+           text-align: right;
+           float:left;
+            
+            
+        }
+
+    .login .login_d{
+        text-align: center;
+        line-height:80px;
+
+    }
+    .login .login_d button{
+        margin-top:25px;
+        font-size: 20px;
+        width: 150px;
+        height: 40px;
+        background-color: #fff;
+        border:1px solid #ebebeb;
+        cursor:pointer;
+
+    }
+    .login .close {
+        position:absolute;
+        top:4px;
+        right:4px;
+        color:#ccc;
+        cursor:pointer;
+    }
+    </style>
+
+</head>
+<body>
+    <div class = "click"  id = 'c_text'>点击弹窗</div>
+    <div class = 'login' id = 'login_box'>
+        <span class = 'close'>关闭</span>
+        <div class = 'login_t' id = 'login_top'>登录</div>
+        <div class = "login_m">
+            <div class = 'login_input'>
+                <label for="username">用户名:&nbsp;</label> 
+                <input type="text" placeholder="请输入用户名"  id = 'username'>  
+            </div>
+            <div class = 'login_input'>
+                <label for="password">登录密码:&nbsp;</label> 
+                <input type="password" placeholder="请输入用户密码"  id = 'password'> 
+            </div>
+        </div>
+        <div class = 'login_d'>
+            <button>立即登录</button>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        // 1.点击文字显示登录窗口
+        // 1.1 获取元素
+        var click = document.getElementById('c_text');
+        var login = document.getElementById('login_box');
+        // 1.2 注册点击事件,点击文字打开登录窗口
+        click.onclick = function (){
+            login.style.display = 'block';
+        }
+
+
+        // 2.点击关闭，关闭窗口
+        var close = document.getElementsByClassName('close');
+        // 2.1 注册点击关闭事件
+        close[0].onclick = function () {
+            login.style.display = 'none';
+        }
+
+
+
+        // 3.鼠标在登录框顶部按下时可以拖动窗口
+        // 3.1 获取元素
+        var login_t = document.getElementById('login_top');
+
+        // 3.2 注册鼠标按下事件
+
+        login_t.onmousedown = function(e){
+            // 获取鼠标按下是时鼠标的坐标、
+            var downX = e.clientX;
+            var downY = e.clientY;
+            // console.log(e.clientX);
+            // console.log(e.clientY);
+            // 获取鼠标按下时，登录盒子的x和y轴方向距离
+            var boxX = login.offsetLeft;
+            var boxY = login.offsetTop;
+
+            // 注册鼠标移动事件
+            document.onmousemove = function (e){
+                // 获取鼠标移动实时坐标
+                var moveX = e.clientX;
+                var moveY = e.clientY;
+
+                // 计算移动距离
+
+                var distanceX = moveX - downX;
+                var distanceY = moveY - downY;
+
+                // 盒子现在的位置=鼠标按下时盒子的位置+移动距离
+
+                var posX = distanceX + boxX ;
+                var posY = distanceY + boxY ;
+
+                
+                
+                // 限制盒子移动范围在可视区内
+                posX = window.innerWidth-posX - login.offsetWidth > 0 ? posX < 0 ? 0 : posX : window.innerWidth - login.offsetWidth;
+                posY = window.innerHeight-posY - login.offsetHeight > 0 ? posY < 0 ? 0 : posY : window.innerHeight - login.offsetHeight ;
+
+
+
+                login.style.left = posX + 250 +'px';
+                login.style.top = posY + 130 + 'px';
+
+            }
+            login_t.onmouseup = function (){
+
+                document.onmousemove = null;
+            }
+            
+        }
+
+
+
+
+    
+    
+    
+    
+    
+    </script>
+</body>
+</html>

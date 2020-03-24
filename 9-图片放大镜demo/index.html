@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        #s_box{
+            width: 400px;
+            height: 266.43px;
+            
+            /* height: 200px; */
+            border:1px solid #ccc;
+            margin:100px;
+            position: relative;
+            -moz-user-select: none;
+            /*火狐*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10*/
+            -khtml-user-select: none;
+            /*早期浏览器*/
+            user-select: none;
+
+        }
+        #s_box img{
+            width: 400px;;
+            
+        }
+        #b_box {
+            width:400px;
+            height:400px;
+            position: absolute;
+            left:600px;
+            top:100px;
+            border:1px solid #ccc;
+            overflow: hidden;
+            display: none;
+
+
+        }
+        #b_box img{
+            height: 800px;
+           
+        }
+
+        #move {
+            width: 100px;
+            height: 100px;
+            border:1px solid #ccc;
+            position:absolute;
+            top:0;
+            left:0;
+            background-color: rgba(255,255,0,0.3);
+            display: none;
+
+
+        }
+    
+    
+    
+    </style>
+
+</head>
+<body>
+    <div id = 's_box'>
+        <img src="imgs/4.jpeg" alt=""  id = 'img1'>
+        <div id = 'move'></div>
+    </div>
+    <div id = 'b_box'>
+        <img src="imgs/4.jpeg" alt=""  id = 'img2'>
+    </div>
+
+
+    <script>
+
+        var s_box = document.getElementById('s_box');
+        var b_box = document.getElementById('b_box');
+        var move = document.getElementById('move');
+        var img1 = document.getElementById('img1');
+        var img2 = document.getElementById('img2');
+
+        // 鼠标移入到s_box中move和b_box展示
+        s_box.onmouseenter = function () {
+            move.style.display = 'block';
+            b_box.style.display = 'block';
+        }
+        // 鼠标移出s_box,move和b_box隐藏
+        s_box.onmouseleave = function () {
+            move.style.display = 'none';
+            b_box.style.display = 'none';
+        }
+
+
+        // 注册鼠标移动事件
+        document.onmousemove = function (e) {
+            // 获取鼠标坐标
+            var x = e.clientX;
+            var y = e.clientY;
+
+            // 获取现在盒子的左侧和上侧距离
+            var nowX = s_box.offsetLeft;
+            var nowY = s_box.offsetTop;
+
+            // 计算鼠标在盒子里的移动的位置（在s_box里的坐标）
+            var moveX = x - nowX;
+            var moveY = y - nowY;
+           
+            // 让鼠标处于move的中间
+            moveX -= move.offsetWidth/2;
+            moveY -= move.offsetHeight/2;
+
+            // 计算move盒子X方向能移动的最大距离 ： move的宽- s_box的宽
+            var moveMaxX = s_box.offsetWidth - move.offsetWidth;
+            // 计算move盒子Y方向能移动的最大距离 ： move的高- s_box的高
+            var moveMaxY = s_box.offsetHeight - move.offsetHeight;
+
+            moveX = moveX < 0 ? 0 : moveX;
+            moveX = moveX > moveMaxX ? moveMaxX : moveX;
+            moveY = moveY < 0 ? 0 : moveY;
+            moveY = moveY > moveMaxY ? moveMaxY : moveY;
+
+            move.style.left = moveX +'px';
+            move.style.top = moveY +'px';
+
+
+
+
+            // 控制放大镜盒子里面图片移动
+            // move盒子移动的距离/move盒子能移动的最大距离==放大镜图片移动的距离/放大镜盒子能动的最大距离
+
+            
+
+            // 计算img2盒子X方向能移动的最大距离 ： img2的宽- b_box的宽
+            var img2MaxX = img2.offsetWidth - b_box.offsetWidth;
+            // 计算img2盒子Y方向能移动的最大距离 ： img2的高- b_box的高
+            var img2MaxY = img2.offsetHeight - b_box.offsetHeight;
+
+            // 计算img图片移动的距离
+            var img2X = moveX / moveMaxX * img2MaxX;
+            var img2Y = moveY / moveMaxY * img2MaxY;
+
+
+
+            img2.style.position = 'absolute';
+            img2.style.left = -img2X + 'px';
+            img2.style.top = -img2Y + 'px';
+
+
+        }
+
+    </script>
+</body>
+</html>

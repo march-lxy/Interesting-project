@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+
+        body,ol,ul,li{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        body {
+            background-color: rgb(89, 165, 89);
+        }
+
+        #box #imgBox ul li{
+            float:left;
+            overflow: hidden;
+        }
+        #box {
+            width: 530px;
+            height: 300px;
+            position:relative;
+            margin:200px auto;
+            border: 1px solid #ccc;
+            
+            
+            
+        }
+        #box #imgBox{
+            width: 533.33px;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+        #box #imgBox ul{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 4000px;
+            
+        }
+        #box #imgBox ol{
+            width:180px;
+            position:absolute;
+            left:50%;
+            margin-left:-90px;
+            bottom: 10px;
+            
+        }
+        #box #imgBox ol li {
+            float:left;
+            text-align: center;
+            line-height:20px;
+            color:whitesmoke;
+            margin:5px;
+            width: 20px;
+            height: 20px;
+            border:1px solid #ccc;
+            background-color:rgba(89,165,89,0.3);
+            border-radius: 50%;
+
+        }
+        #box #imgBox ol li.highlight{
+            background-color: rgb(89, 109, 89);
+        }
+        #box .jt{
+            width: 35px;
+            height: 35px;
+            font-size:35px;
+            font-weight: 700;
+            color:seashell;
+            line-height: 35px;
+            text-align: center;
+            display: inline-block;
+            cursor:pointer;
+            
+        }
+        #box #left{
+            position:absolute;
+            left:0px;
+            top:50%;
+            margin-top:-17.5px;
+        }
+        #box #right{
+            position:absolute;
+            right:0px;
+            top:50%;
+            margin-top:-17.5px;
+        }
+    
+    </style>
+</head>
+<body>
+    <div  id = 'box'>
+        <div id = 'imgBox'>
+            <ul id = 'uls'>
+                <li>
+                    <img src="imgs/1.png" alt="" height = '300px' width = '534px'>
+                </li>
+                <li>
+                    <img src="imgs/3.jpg" alt="" height = '300px' width = '534px'>
+                </li>
+                <li >
+                    <img src="imgs/4.png" alt="" height = '300px' width = '534px'>
+                </li>
+                <li>
+                    <img src="imgs/5.jpg" alt="" height = '300px' width = '534px'>
+                </li>
+                <li>
+                    <img src="imgs/6.jpg" alt="" height = '300px' width = '534px'>
+                </li>
+            </ul>
+            <ol></ol>
+        </div>
+        <span id = 'left'  class = 'jt'>&lt;</span>
+        <span id = 'right' class = 'jt'>&gt;</span>
+    </div>
+
+
+
+    <script>
+        // 需求：完成轮播图效果
+
+
+        // 获取元素
+
+        var box    = document.getElementById('box');
+        var imgBox = document.getElementById('imgBox');
+        var ul     = document.getElementById('uls');
+        var ol     = document.getElementsByTagName('ol')[0];
+        var k      = 0;
+        var lis    = ul.children;
+
+// 1.动态的创建ol下的li----------------------开始----------------------------
+        for(var i = 0 ;i < ul.children.length ; i++){
+            var li = document.createElement('li');
+            li.setAttribute('index',i);
+            // 存储对应图片下标，给每个li是指一个自定义属性来存储
+            li.innerText = i +1;
+            // 默认情况下第一张图，所以设置对应的li高亮
+            if(i == 0 ){
+                li.className = 'highlight';
+            }
+            ol.appendChild(li);
+            li.style.cursor = 'pointer';
+            // 注册ol下的li的点击事件
+            li.onclick = fn;
+        }
+//  ----------------------------------------结束--------------------------     
+
+
+
+// 2.为了美观将ul里面的第一张图复制放到ul最后面----------------开始------------
+        var newli = lis[0].cloneNode(true);
+        ul.appendChild(newli);
+        // console.log(newli);
+// ----------------------------------结束---------------------------------
+
+
+        
+// 3.ol下li的点击事件函数---------------------开始--------------------------
+        function fn(){
+            var target = this.getAttribute('index') * imgBox.offsetWidth;      
+            boxMove(uls,-target,5); 
+            for(var i = 0 ; i < ol.children.length; i++){
+                ol.children[i].className = '';
+            }
+            this.className = 'highlight';
+            k = this.getAttribute('index');
+        }
+// --------------------------------------结束-----------------------------
+        
+
+
+// 4.注册右按钮点击事件   -------------------开始---------------------------
+        // 3.1获取元素
+        var right  = document.getElementById('right');
+        // 右侧按钮点击事件
+        right.onclick = function (){
+            // 判断是否在第五张图，在的话就切换到第六张图，然后直接把坐标转回第一张，ol下的第一个li高亮
+            if(k == ol.children.length - 1){
+                k++;
+                var target = k * imgBox.offsetWidth;
+                boxMove(ul,-target,5,function(){
+                    ul.style.left = '0';
+                    k = 0;
+                });
+
+                // 让ol中第一个li高亮------
+                for(var i = 0; i < ol.children.length; i++){
+                    ol.children[i].className = '';  
+                }
+                ol.children[0].className = 'highlight';
+                // ---------------
+            }else{
+                k++;
+                ol.children[k].onclick();
+                
+            }
+        }
+// -------------------------------结束------------------------------------
+
+
+
+// 5.注册左侧按钮点击事件------------------开始-----------------------------
+        var left   = document.getElementById('left');
+        left.onclick = function (){
+            // 判断现在的位置(坐标)
+            if(k == 0){
+                k = ol.children.length;
+                ul.style.left = -k *imgBox.offsetWidth +'px';
+                k--;
+                ol.children[k].onclick();
+            }else{
+                k--;
+                ol.children[k].onclick();
+            }
+        }
+// -----------------------------------------结束--------------------------
+
+
+// 6.鼠标移入左右箭头显示，移出消失，设置自动轮播，移入停止-------开始--------
+
+        box.onmouseenter = function(){
+            left.style.display = 'inline-block';
+            right.style.display = 'inline-block';
+            clearInterval(timeid);
+        }
+
+        box.onmouseleave = function() {
+            left.style.display = 'none';
+            right.style.display = 'none';
+
+            timeid = setInterval(function(){
+                right.onclick();
+            } ,2500)
+        }
+// -----------------------------------------结束--------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 封装控制对象移动的函数---------------------------开始--------------------
+// boxMove为封装好的控制盒子移动函数
+// element:传入的对象
+// target:传入的移动目标值
+// distance:传入的每次要移动的距离
+        function boxMove(element, target, distance,cellback) {
+            // 清除重复的点击事件发生
+            if (element.timeid) {
+                clearInterval(element.timeid);
+            }
+            // 设置定时器事件
+            element.timeid = setInterval(function () {
+                var nowX = element.offsetLeft;
+                element.style.position = 'absolute';
+
+                // 判断往哪个方向移动
+                if (nowX < target) {
+                    var targetX = nowX + distance;
+                    
+                } else {
+                    var targetX = nowX - distance;  
+                }
+
+                element.style.left = targetX + 'px';
+
+                if(Math.abs(targetX-target) < distance){
+                    clearInterval(element.timeid);
+                    element.style.left = target + 'px'; 
+                    if(cellback){
+                        cellback();
+                    }
+                } 
+            }, 10);
+        }
+// -------------------------------结束-----------------------------
+ 
+    </script>
+</body>
+</html>

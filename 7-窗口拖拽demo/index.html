@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <title>Document</title>
+
+    <style> 
+    body {
+        background-color:rgb(100, 103, 104);
+    }
+    #box {
+        width: 300px;
+        border:1px solid #ccc;
+        background-color:lightgreen;
+        position:absolute;
+        left:35%;
+        top:35%;
+        
+    }
+    #t_box{
+        height: 30px;
+        background-color: rgb(141, 134, 134);
+        text-align: center;
+        line-height:30px;
+        font-size:20px;
+        cursor: move; /*将鼠标编程移动标示*/
+    }
+
+    #d_box{
+        background-image: url(1.jpg);
+        background-size:auto 200px;
+        height:200px;
+    }
+    </style>
+</head>
+<body>
+    <div  id ='box'>
+        <div id ='t_box'>鼠标点击拖动</div>
+        <div id ='d_box'></div>
+    </div>
+
+
+
+    <script>
+
+        // 获取元素
+        var box = document.getElementById('box');
+        var t_box = document.getElementById('t_box');
+        var d_box = document.getElementById('d_box');
+
+        var nowX = box.offsetLeft;
+        var nowY = box.offsetTop;
+        // 注册鼠标按下事件
+        t_box.onmousedown = function(e){
+            // 获取鼠标按下时鼠标坐标
+            var downX = e.clientX;
+            var downY = e.clientY;
+
+            // 获取现在盒子的左侧和上侧距离
+            var nowX = box.offsetLeft;
+            var nowY = box.offsetTop;
+
+            // console.log(downX);
+            // console.log(e.clientY);
+            // 注册鼠标移动事件
+            document.onmousemove = function(a){
+
+            // 获取鼠标移动的坐标   
+            var X = a.clientX;
+            var Y = a.clientY;
+            // console.log(X);
+            // console.log(Y);
+
+            // 鼠标移动后的坐标减去鼠标按下时的坐标等于盒子应该移动的位置
+            var moveX = X - downX; 
+            var moveY = Y - downY;
+
+            // 计算盒子现在的水平位置和垂直位置    
+            var xx = nowX + moveX;
+            var yy = nowY + moveY;
+
+            // 将盒子移动范围限制在页面可视区内
+            var allX = xx + box.offsetWidth;
+            var allY = yy + box.offsetHeight;
+
+            xx = allX < window.innerWidth ? xx < 0 ? 0 : xx : window.innerWidth -  box.offsetWidth;
+            yy = allY < window.innerHeight ? yy < 0 ? 0 : yy : window.innerHeight -  box.offsetHeight;
+           
+            // 将获取到的盒子的位置赋值
+            box.style.left = xx + 'px';
+            box.style.top = yy + 'px';
+            // console.log(nowX);
+            // console.log(nowY);
+            
+
+        }
+        }
+        t_box.onmouseup = function(){
+
+            document.onmousemove= null;
+        }
+        
+    
+    
+    
+    
+    </script>
+</body>
+
+</html>
