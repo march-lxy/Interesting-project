@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #confine{
+            width: 900px;
+            height: 700px;
+            background-color:#ccc;
+            position:relative;
+        }
+    
+
+    </style>
+</head>
+<body>
+    <div id = 'confine'></div>
+    <script src = 'tools.js'></script>
+    <script src = 'food.js'></script>
+    <script src = 'snake.js'></script>
+    <script src = 'game.js'></script>
+    <script>
+        var confine = document.getElementById('confine');
+        // var Food = new food();
+        // Food.render();
+
+        // var Snake = new snake();
+        // Snake.render();
+        // Snake.move();
+        var game = new Game();
+        game.start();
+    </script>
+       
+</body>
+</html>

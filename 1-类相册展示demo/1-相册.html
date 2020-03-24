@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>相册</title>
+</head>
+<body>
+    <div id = "box" >
+        <h3>相册</h3>
+        <a href="img/a.jpg" title = "图片A"  style = "display:inline-block">
+            <img src="img/a.jpg" alt="图片A" style = "height:50px ">
+        </a>
+        <a href="img/b.jpg" title = "图片B" style = "display:inline-block">
+            <img src="img/b.jpg" alt="图片B" style = "height:50px ">
+        </a>
+        <a href="img/c.jpg" title = "图片C" style = "display:inline-block">
+            <img src="img/c.jpg" alt="图片C" style = "height:50px">
+        </a>
+        <a href="img/d.jpg" title = "图片D" style = "display:inline-block">
+            <img src="img/d.jpg" alt="图片D" style = "height:50px">
+        </a>
+    </div>
+    <br/>
+    <div>-----------------------------------</div>
+    
+    <div style = "height:260px ">
+        <img  id = "imgs" src="img/placeholder.png" alt=""  style = "width:400px">
+    </div>
+    
+    <div>-----------------------------------</div>
+   
+    <span id="text">图片</span>
+
+    <script>
+        var box = document.getElementById("box");
+        var links = document.getElementsByTagName("a");
+        var imgs = document.getElementById("imgs");
+        var text = document.getElementById("text");
+
+
+        for(var i = 0;i < links.length; i++){
+            links[i].onclick = function(){
+
+                imgs.src = this.href;
+                text.innerText = this.title;
+
+                return false;
+
+            }
+
+        }
+
+    
+    
+    </script>
+</body>
+</html>

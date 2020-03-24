@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: #000;
+        }
+        ul{
+            list-style:none;
+        }
+        #box{
+            margin: 100px auto 0;
+            width: 630px;
+            height: 394px;
+            padding: 10px 0 0 10px;
+            background: #000;
+            /* overflow: hidden; */
+            border: 1px solid #fff;
+        }
+
+        #box li{
+            float:left;
+            margin: 0 10px 10px 0;
+
+        }
+    
+    </style>
+
+</head>
+<body>
+    <div id = 'box'>
+        <ul>
+            <li><img src="images/01.jpg" alt=""></li>
+            <li><img src="images/02.jpg" alt=""></li>
+            <li><img src="images/03.jpg" alt=""></li>
+            <li><img src="images/04.jpg" alt=""></li>
+            <li><img src="images/05.jpg" alt=""></li>
+            <li><img src="images/06.jpg" alt=""></li>
+        </ul>
+    </div>
+    <script src = '../jquery-1.12.4.js'></script>
+    <script>
+        $(document).ready(function(){
+
+            $('#box li').mouseenter(function(){
+               $(this).css('opacity',1).siblings().css('opacity',0.4);
+            })
+            $('#box').mouseleave(function(){
+               $('li').css('opacity',1);
+            })
+
+
+
+        })
+
+
+    </script>
+</body>
+</html>

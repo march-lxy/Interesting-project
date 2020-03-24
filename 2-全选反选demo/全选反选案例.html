@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="fanxuan.css">
+    <title>全选反选案例</title>
+</head>
+<body>
+    <div>
+    <table border="1" cellspacing = "0">
+        <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" id = "c_all">
+                </td>
+                <td>姓名</td>
+                <td>年龄</td>
+                <td>性别</td>
+            </tr>
+        </thead>
+        <tbody id = "other">   
+            <tr>
+                <td>
+                    <input type="checkbox" name>
+                </td>
+                <td>a</td>
+                <td>b</td>
+                <td>c</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name>
+                </td>
+                <td>A</td>
+                <td>B</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name>
+                </td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name>
+                </td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+        </tbody>  
+    </table>
+    <input type="button" value="反选"  id='btn'>
+    </div>
+
+
+    <script>
+        // 1.全选框，未全选时点击全部选择，全选时点击取消选择
+        var c_all = document.getElementById("c_all");
+        var other = document.getElementById('other');
+        var inputs = other.getElementsByTagName('input');
+        // console.log(inputs);
+        c_all.onclick = function(){
+
+            for(var i = 0;i < inputs.length;i++){
+                inputs[i].checked = c_all.checked;
+            }
+        }
+
+        // 2.如果下面的都选中了，全选也选中
+        for(var i = 0;i < inputs.length;i++){
+                inputs[i].onclick = all;
+            }
+
+        function all(){
+            var flag = true;
+            for(var i = 0; i<inputs.length;i++){
+                if(inputs[i].checked == false){
+                    flag = false;
+                }
+            }
+            c_all.checked = flag;
+        }
+
+        // 3.反选按钮
+        var btn = document.getElementById('btn');
+        btn.onclick = function(){
+            for(var i = 0 ; i < inputs.length; i++){
+                if(inputs[i].checked){
+                    inputs[i].checked = false;
+                    c_all.checked = false;
+                }else{
+                    inputs[i].checked = true;  
+                    c_all.checked = true;
+                }
+            }
+        }
+       
+
+    
+    </script>
+</body>
+</html>
