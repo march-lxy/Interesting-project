@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //声明一个代理
+        let DOM = new Proxy({}, {
+            get(target, attr) {
+                //添加一个dom
+                let domObj = document.createElement(attr);
+                return (attrs, ...children) => {
+                    //给dom添加属性
+                    for (let key in attrs) {
+                        domObj.setAttribute(key, attrs[key]);
+                    };
+                    //给当前dom添加内容
+                    for(let i=0; i<children.length; i++){
+                        if(typeof children[i] == 'string'){
+                            children[i] =  document.createTextNode(children[i])
+                        };
+                        domObj.appendChild(children[i]);
+                    };
+                    return domObj;
+                };
+            }
+        });
+        let d1 = DOM.ul(
+            {id:'idUl',class:'classUl'}, 
+            DOM.li({id:'idLi1',class:'classLi1'},'子选项1'),
+            DOM.li({id:'idLi2',class:'classLi2'},'子选项2'),
+            DOM.li({id:'idLi3',class:'classLi3'},'子选项3'),
+            DOM.li({id:'idLi4',class:'classLi4'},'子选项4')
+        );
+        document.body.appendChild(d1);
+
+    </script>
+</body>
+
+</html>

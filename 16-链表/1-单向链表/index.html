@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //声明一个链表类
+    function LinkedList() {
+      //内部类
+      function Node(data) {
+        this.data = data;
+        this.next = null;
+      }
+      this.head = null;
+      this.length = 0;
+      //添加链表子节点方法
+      LinkedList.prototype.append = function (data) {
+        //实例化子节点类
+        let newNode = new Node(data);
+        //当链表为空时赋值给head
+        if (this.length == 0) {
+          this.head = newNode;
+        } else {
+          //当链表有数据时
+          let current = this.head;
+          //当next存在说明该节点后还有节点
+          while (current.next) {
+            //每次循环后current就是最后一个节点
+            current = current.next;
+          }
+          //给最后一个节点的next属性赋值
+          current.next = newNode;
+        }
+        this.length += 1;
+      };
+
+      //insert(链表指定位置插入元素)
+      LinkedList.prototype.insert = function (position, data) {
+        //判断传入格式
+        if (position < 0 || position >= this.length) return false
+        //实例化子节点类
+        let newNode = new Node(data),
+          nodeIndex = 0,
+          current = this.head,
+          beforeNode = null;
+        //当pos为0
+        if (position == 0) {
+          newNode.next = this.head;
+          this.head = newNode;
+        } else {
+          //当pos不为0
+          while (nodeIndex < position) {
+            beforeNode = current;//当前插入节点的前一个节点
+            current = current.next;//当前这个pos位置上的节点
+            nodeIndex += 1;
+          };
+          beforeNode.next = newNode;//把上一个节点的next指针指向当前添加的
+          newNode.next = current;//当前插入节点的next指针指向原本在这个位置上的节点
+          this.length += 1;
+        }
+      };
+
+      //get(获取指定位置元素)
+      LinkedList.prototype.get = function (position) {
+        //判断传入格式
+        if (position < 0 || position >= this.length) return false
+        let current = null,
+            nodeIndex = 0;
+        if(position == 0){
+          current = this.head;
+        }else{
+          current = this.head;
+          while(nodeIndex++ < position){
+            current = current.next;
+          }; 
+        };
+        return current.data
+      };
+
+      //indexOf(返回元素索引，没有返回-1)
+      LinkedList.prototype.indexOf = function (element) {
+        let current = this.head,
+            nodeIndex = 0;
+        while(nodeIndex < this.length){
+          if(current.data == element){
+            return nodeIndex;
+          };
+          nodeIndex++;
+          current = current.next;
+        };
+        return -1
+      };
+
+      //update(修改指定位置数据)
+      LinkedList.prototype.update = function (position, data){
+        //判断传入格式
+        if (position < 0 || position >= this.length) return false
+        let current = this.head,
+            nodeIndex = 0;
+
+        if(position == 0){
+          current.data = data;
+        } else {
+          while(nodeIndex < position){
+            current = current.next;
+            nodeIndex += 1;
+          };
+          current.data = data
+        }
+      };
+
+      //removePos(移除指定位置节点)
+      LinkedList.prototype.removePos = function(position){
+        //判断传入格式
+        if (position < 0 || position >= this.length) return false
+
+        let current = this.head,
+            nodeIndex = 0,
+            beforeNode = null;
+        if(position == 0 ){
+          this.head = this.head.next;
+        } else {
+          while(nodeIndex < position){
+            beforeNode = current;
+            current = current.next;
+            nodeIndex += 1;
+          };
+          beforeNode.next = current.next;
+          this.length -= 1;
+        }     
+      };
+
+      //removeEle(移除指定节点)
+      LinkedList.prototype.removeEle = function (element){
+        let current = this.head,
+            nodeIndex = 0,
+            beforeNode = null;
+        while(nodeIndex < this.length){
+          if(current.data == element){
+            break;
+          };
+          nodeIndex += 1;
+          beforeNode = current;
+          current = current.next;
+        };
+        beforeNode.next = current.next;
+        this.length -= 1;
+      };
+
+      //isEmpty(判断队列是否为空)
+      LinkedList.prototype.isEmpty = function (){
+        return this.length == 0
+      };
+
+      //size(返回链表长度)
+      LinkedList.prototype.size = function (){
+        return this.length
+      };
+
+    };
+
+    //测试链表添加
+    let list = new LinkedList();
+    list.append('a');
+    list.append('b');
+    list.append('c');
+
+    //测试按位置插入节点
+    list.insert(2, 'd')
+
+    //测试获取指定位置节点数据
+    console.log(list.get(0))
+
+    //测试获取指定元素下标
+    console.log(list.indexOf('d'))
+
+    //测试修改指定位置节点数据
+    list.update(1, 'h')
+
+    //测试删除指定位置节点
+    list.removePos(2)
+    
+    //测试移除指定节点
+    list.removeEle('h')
+
+    //测试链表非空判断
+    console.log(list.isEmpty())
+
+    //测试获取链表长度
+    console.log(list.size())
+
+    //获取当前链表
+    console.log(list)
+
+  </script>
+</body>
+
+</html>

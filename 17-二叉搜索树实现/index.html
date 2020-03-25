@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    //创建一个tree的类
+    function BinarySearchTree() {
+
+      //节点类
+      function Node(key, value) {
+        this.left = null;
+        this.key = key;
+        this.value = value;
+        this.right = null;
+      };
+
+      //根属性
+      this.root = null;
+
+      //insert(数据节点插入)
+      BinarySearchTree.prototype.insert = function (key, value) {
+        //实例化一个子节点
+        let newNode = new Node(key, value);
+
+        if (!this.root) {  //第一次传入数据时
+          this.root = newNode;
+        } else {
+          this.insertNode(this.root, newNode)
+        }
+
+      };
+
+      //insertNode(子节点插入函数)递归处理数据
+      BinarySearchTree.prototype.insertNode = function (beforeNode, newNode) {
+        if (beforeNode.key > newNode.key) { //节点左边插入
+          if (!beforeNode.left) {
+            beforeNode.left = newNode;
+          } else {
+            this.insertNode(beforeNode.left, newNode)
+          }
+        } else { //节点右边插入
+          if (!beforeNode.right) {
+            beforeNode.right = newNode;
+          } else {
+            this.insertNode(beforeNode.right, newNode)
+          }
+        }
+      };
+
+
+      //preorderTraversal(前序遍历)
+      BinarySearchTree.prototype.preorderTraversal = function (handler) {
+        //第一次传入根节点
+        this.preorderTraversalNode(this.root, handler);
+      };
+
+      /*
+      *preorderTraversalNode(递归处理node)
+      * @param (class) node  ->节点数据
+      * @param (function) handler  ->处理节点的函数
+      **/
+      BinarySearchTree.prototype.preorderTraversalNode = function (node, handler) {
+        if (node) {
+          //前序先处理node
+          handler(node);
+          //处理左节点数据
+          this.preorderTraversalNode(node.left, handler);
+          //处理右节点数据
+          this.preorderTraversalNode(node.right, handler);
+        }
+      };
+
+
+      //inorderTraversal(中序遍历)
+      BinarySearchTree.prototype.inorderTraversal = function (handler) {
+        //第一次传入根节点
+        this.inorderTraversalNode(this.root, handler);
+      };
+
+      /*
+      *inorderTraversalNode(递归处理node)
+      * @param (class) node  ->节点数据
+      * @param (function) handler  ->处理节点的函数
+      **/
+      BinarySearchTree.prototype.inorderTraversalNode = function (node, handler) {
+        if (node) {
+          //处理左节点数据
+          this.inorderTraversalNode(node.left, handler);
+          //中序处理node
+          handler(node);
+          //处理右节点数据
+          this.inorderTraversalNode(node.right, handler);
+        }
+      };
+
+      //postorderTraversal(后序遍历)
+      BinarySearchTree.prototype.postorderTraversal = function (handler) {
+        //第一次传入根节点
+        this.postorderTraversalNode(this.root, handler);
+      };
+
+      /*
+      *postorderTraversalNode(递归处理node)
+      * @param (class) node  ->节点数据
+      * @param (function) handler  ->处理节点的函数
+      **/
+      BinarySearchTree.prototype.postorderTraversalNode = function (node, handler) {
+        if (node) {
+          //处理左节点数据
+          this.postorderTraversalNode(node.left, handler);
+          //处理右节点数据
+          this.postorderTraversalNode(node.right, handler);
+          //后序处理node
+          handler(node);
+        }
+      };
+
+      //max找最大值
+      BinarySearchTree.prototype.max = function () {
+        let node = this.root;
+        while (node.right) {
+          node = node.right;
+        };
+        return node
+      };
+
+      //min最小值
+      BinarySearchTree.prototype.min = function () {
+        let node = this.root;
+        while (node.left) {
+          node = node.left;
+        };
+        return node
+      };
+
+      //搜索指定的key
+      BinarySearchTree.prototype.search = function (key) {
+        let node = this.root;
+        while (node) {
+          if (node.key < key) {
+            node = node.right;
+          } else if (node.key > key) {
+            node = node.left;
+          } else {
+            return node
+          };
+        };
+      };
+
+      //删除节点
+      BinarySearchTree.prototype.remove = function (key) {
+        let node = this.root, //删除的节点
+            parentNode = null,//删除节点的父节点
+            isLeft = true; //删除的节点是否为左节点
+
+        //查找该节点
+        //node = this.search(key);
+        while (node.key != key) {
+          parentNode = node;
+          if (node.key < key) {
+            node = node.right;
+            isLeft = false;
+          } else if (node.key > key) {
+            node = node.left;
+            isLeft = true;
+          };
+
+          if (node === null) return console.warn('This node was not found!');
+          
+        };
+
+        //1.当删除的节点没有子节点（叶子节点）
+        if (!node.left && !node.right) {
+
+          if (node == this.node) { //当是根节点
+            this.node = null
+          } else if (isLeft) {
+            parentNode.left = null;
+          } else {
+            parentNode.right = null;
+          };
+
+        } else if (!node.right) {//2.只存在左子节点
+
+          if (node == this.root) {//为根节点
+            this.root = node.left;
+          } else if (isLeft) { //在父节点的左
+            parentNode.left = node.left;
+          } else { //在父节点的右
+            parentNode.right = node.left;
+          };
+
+        } else if (!node.left) {//3.只存在右子节点
+
+          if (node == this.root) {//为根节点
+            this.root = node.right;
+          } else if (isLeft) { //在父节点的左
+            parentNode.left = node.right;
+          } else { //在父节点的右
+            parentNode.right = node.right;
+          };
+
+        } else { //4.删除节点下有两个子节点
+
+          //1.找后继（元素右侧最小节点）
+          let succeed = node.right,//后继
+              current = node.right,
+              succeedParent = node;//后继元素的父级
+
+          while(current.left){
+            succeedParent = succeed;
+            succeed = current.left;
+            current = current.left
+          };
+
+          if(node == this.root){//根节点
+            this.root = succeed;
+          }else if(isLeft){//在父级左侧
+            parentNode.left = succeed;
+          }else{ //在父级右侧
+            parentNode.right = succeed;
+          };
+
+          succeed.left = node.left;
+          console.log(succeed)
+          //当后继节点不是删除节点的直系子节点
+          if(succeed != node.right){
+            succeedParent.left = succeed.right;
+            succeed.right = node.right
+          };
+
+        };
+
+      };
+
+    };
+
+    //实例化树
+    let tree = new BinarySearchTree();
+
+    //测试树节点插入
+    tree.insert(15, 'a');
+    tree.insert(6, 'b');
+    tree.insert(8, 'c');
+    tree.insert(24, 'd');
+    tree.insert(12, 'e');
+    tree.insert(5, 'f');
+    tree.insert(9, 'g');
+    tree.insert(26, 'h');
+    tree.insert(36, 'i');
+    tree.insert(23, 'j');
+    tree.insert(25, 'k');
+    tree.insert(25.5, 'p');
+    tree.insert(3, 'l');
+    console.log(tree)
+
+    //测试前序遍历
+    let beforeBinarySearchTreeKeyStr = '',//树节点key前序遍历str
+      beforeBinarySearchTreeValueStr = '';//树节点value前序遍历str
+    tree.preorderTraversal((node) => {
+      beforeBinarySearchTreeKeyStr += node.key + ` `;
+      beforeBinarySearchTreeValueStr += node.value + ` `;
+    });
+    // console.log(beforeBinarySearchTreeKeyStr);
+    // console.log(beforeBinarySearchTreeValueStr);
+
+    //测试中序遍历
+    let middleBinarySearchTreeKeyStr = '',//树节点key前序遍历str
+      middleBinarySearchTreeValueStr = '';//树节点value前序遍历str
+    tree.inorderTraversal((node) => {
+      middleBinarySearchTreeKeyStr += node.key + ` `;
+      middleBinarySearchTreeValueStr += node.value + ` `;
+    });
+    // console.log(middleBinarySearchTreeKeyStr);
+    // console.log(middleBinarySearchTreeValueStr);
+
+    //后续遍历测试
+    let endBinarySearchTreeKeyStr = '',//树节点key前序遍历str
+      endBinarySearchTreeValueStr = '';//树节点value前序遍历str
+    tree.postorderTraversal((node) => {
+      endBinarySearchTreeKeyStr += node.key + ` `;
+      endBinarySearchTreeValueStr += node.value + ` `;
+    });
+    // console.log(endBinarySearchTreeKeyStr);
+    // console.log(endBinarySearchTreeValueStr);
+
+    //找最大最小值
+    console.log(tree.max());
+    console.log(tree.min());
+
+    //查找节点
+    // console.log(tree.search(26));
+
+    //删除节点
+
+    tree.remove(24);
+    console.log(tree);
+
+  </script>
+</body>
+
+</html>

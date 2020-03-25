@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function DoubleLinkedList(){
+      function Node(data){
+        this.prev = null;
+        this.data = data;
+        this.next = null;
+      };
+
+      this.head = null;
+      this.end = null;
+      this.length = 0;
+
+      //链表添加数据
+      DoubleLinkedList.prototype.append = function(data){
+        let newNode = new Node(data);
+
+        if(this.length == 0){
+          this.head = newNode;
+          this.end = newNode;
+        } else {
+          newNode.prev = this.end;
+          this.end.next = newNode;
+          this.end = newNode;
+        };
+        this.length += 1;
+
+      };
+
+
+    }
+
+    var list = new DoubleLinkedList();
+    list.append('a')
+    list.append('b')
+    list.append('c')
+    list.append('d')
+
+    console.log(list)
+    alert(list)
+
+
+  </script>
+</body>
+</html>

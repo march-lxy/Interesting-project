@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>五角星评分案例</title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .comment {
+        font-size: 40px;
+        color: red;
+    }
+
+    .comment li {
+        float: left;
+    }
+
+    ul {
+        list-style: none;
+        /*overflow: hidden;*/
+    }
+    </style>
+</head>
+
+<body>
+    <ul class="comment">
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+    </ul>
+
+    <script src="../jquery-1.12.4.js"></script>
+    <script>
+        $(function(){
+
+            // 分析:
+            // 实现效果:鼠标移上当前和当前五角星以前的变成实心,后面的变成空心.移出后所有变成实心.(如果有点击发生则移出后效果保存)
+            // 1.注册鼠标移上事件
+
+            var solid = '★';
+            var hollow = '☆';
+
+            $('.comment li').mouseenter(function(){
+                $(this).text(solid).prevAll().text(solid);
+                $(this).nextAll().text(hollow);
+            })
+
+
+            // 2.鼠标移出事件
+            $('.comment li').mouseleave(function(){
+                $('.comment li').text(hollow);
+
+                //根据点击事件里面获取到的下标个设置对应元素
+                $('.comment li').eq(index).text(solid).prevAll().text(solid);
+            })
+
+
+            // 3.点击事件
+
+            var index;//全局声明变量,便于在鼠标移出事件里面调用
+            $('.comment li').on('click',function(){
+                index = $(this).index();//点击获取被点击元素得到下标
+            })
+
+
+
+
+        });
+    
+    
+    
+    
+    
+    </script>
+</body>
+
+</html>

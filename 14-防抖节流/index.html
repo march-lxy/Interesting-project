@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background: green;
+    }
+
+    #box {
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      background-color: #000;
+      color: #fff;
+      margin-top: 300px;
+      font-size: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box">0</div>
+
+  <script>
+    //获取dom
+    let d1 = document.querySelector('#box');
+    console.log(d1);
+    let boxValue = 0;
+    let moveFn = () => {
+      boxValue++;
+      d1.innerHTML = boxValue;
+    };
+
+    //防抖（每次进入重置重新开始）
+    function deBounce(fn, time) {
+      let timed;
+      return () => {
+        if (timed) clearTimeout(timed);
+        timed = setTimeout(() => {
+          fn()
+        }, time);
+      }
+    }
+    // d1.onmousemove = deBounce(moveFn,1000)
+
+    //节流（固定时间段只执行一次）
+
+    function throttle1(fn, time) {
+      let timed;
+      return () => {
+        if (!timed) {
+          timed = setTimeout(() => {
+            timed = null
+            fn()
+          }, time);
+        }
+      }
+    };
+    // d1.onmousemove = throttle1(moveFn, 2000)
+
+    //停止操作一定时间后才能再次操作
+    function throttle2(fn, time) {
+      let timed;
+      return () => {
+        if (timed) clearTimeout(timed);
+        let flag = !timed;
+        timed = setTimeout(() => {
+          timed = null
+        }, time);
+        if (flag) fn()
+      }
+    };
+
+    // d1.onmousemove = throttle2(moveFn, 2000)
+
+  </script>
+</body>
+
+</html>

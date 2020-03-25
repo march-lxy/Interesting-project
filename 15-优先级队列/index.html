@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    //创建优先级队列类
+    class priorityQueue {
+      constructor() {
+        this.items = [];
+      }
+    };
+
+    //队列删除元素（删除前端的一个）
+    priorityQueue.prototype.delQueue = function () {
+      this.items.shift()
+    };
+
+    //查看队列前端内容
+    priorityQueue.prototype.delQueue = function () {
+      return this.items[0]
+    };
+
+    //队列是否为空
+    priorityQueue.prototype.isEmpty = function () {
+      return this.item.length == 0
+    };
+
+    //获取队列个数
+    priorityQueue.prototype.size = function () {
+      return this.item.length
+    };
+
+    //获取队列内容
+    priorityQueue.prototype.getContent = (() =>{
+      console.log(this.items)
+    }).bind(priorityQueue);
+
+    //添加元素
+    priorityQueue.prototype.addQueue = function (element, priority) {
+      let sonElement = {
+        'element': element,
+        'priority': priority
+      };
+      if (this.items.length == 0) {
+        this.items.push(sonElement);
+      } else {
+        let isPriority = false;
+        for (let i = 0; i < this.items.length; i++) {
+          //优先级排序插入
+          if (sonElement.priority < this.items[i].priority) {
+            this.items.splice(i, 0, sonElement);
+            isPriority = true;
+            break;//因为是从第一个开始比较，所以只需要比较一次
+          };
+        };
+        //如果最低就直接插入最后
+        if (!isPriority) {
+          this.items.push(sonElement);
+        };
+      };
+    };
+
+    let queueObj = new priorityQueue();
+    queueObj.addQueue('语文', 5);
+    queueObj.addQueue('英语', 3);
+    queueObj.addQueue('数学', 1);
+    queueObj.addQueue('文科', 7);
+
+    queueObj.getContent();
+
+  </script>
+</body>
+
+</html>

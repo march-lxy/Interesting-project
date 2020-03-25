@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class lPromise {
+      constructor(fn) {
+        this.successList = [];
+        this.failList = [];
+        fn(this.resolve.bind(this), this.reject.bind(this))
+      }
+      then(successFn) {
+        if (typeof successFn == 'function') {
+          this.successList.push(successFn)
+        }
+      }
+      catch(failFn) {
+        if (typeof failFn == 'function') {
+          this.failList.push(failFn)
+        }
+      }
+      resolve(res) {
+        for (let item of this.successList) {
+          item(res)
+        }
+      }
+      reject(err) {
+        for (let item of this.failList) {
+          item(err)
+        }
+      }
+    }
+    let d1 = new lPromise((resolve, reject) => {
+      setTimeout(() => {
+        if (true) {
+          resolve('success')
+        } else {
+          reject('err')
+        }
+      },1000)
+
+    })
+
+    console.log(d1)
+    d1.then((res) => {
+      console.log(res)
+    })
+
+
+
+      // let demo = new promise((resolve,reject)=>{
+      //   if(true){
+      //     resolve('success')
+      //   }else{
+      //     reject('err')
+      //   }
+      // })
+
+      // demo.then((res)=>{
+      //   console.log(res)
+      // })
+
+      // demo.catch((err)=>{
+      //   console.log(err)
+      // })
+
+  </script>
+</body>
+
+</html>
